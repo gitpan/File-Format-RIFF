@@ -9,7 +9,6 @@ lib/File/Format/RIFF.pm
 lib/File/Format/RIFF/Chunk.pm
 lib/File/Format/RIFF/Container.pm
 lib/File/Format/RIFF/List.pm
-lib/File/Format/RIFF/Version.pm
 t/test.riff
 t/test.t
 META.yml                                Module meta-data (added by MakeMaker)

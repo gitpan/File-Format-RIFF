@@ -1,5 +1,14 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.9.0  Wed Mar 30 22:37:20 CST 2005
+	- 'new' for creating new chunks; 'read' for reading from a filehandle
+	- fix bug when getting id of container
+	- RIFF->read: if specify filesize as undef, skip filesize check
+	- bit more testing
+	- use VERSION instead of VERSION_FROM in Makefile.PL
+	- changed versioning scheme
+	- API should be FROZEN for 1.0.0
+
 0.05  Tue Mar 29 22:51:21 CST 2005
 	- RIFF->new: in-memory string filehandles if you pass in 'filesize' arg
 	- more Carp/croak instead of die

@@ -3,36 +3,41 @@ use base File::Format::RIFF::Container;
 
 
 use 5.006;
-use strict;
-use warnings;
-
-our $VERSION = '0.05';
-
-
 use Carp;
+
+our $VERSION = '0.06';
 
 
 sub new
 {
-   my ( $proto, %args ) = @_;
-   croak 'Cannot set id of RIFF chunk' if ( exists $args{id} );
-   my ( $filesize ) = 0;
-   if ( exists $args{fh} and defined $args{fh} )
+   my ( $proto, $type, $data ) = @_;
+   return $proto->SUPER::new( $type, 'RIFF', $data );
+}
+
+
+sub read
+{
+   my ( $proto ) = shift;
+   my ( $fh ) = shift;
+
+   my ( $filesize );
+   if ( @_ )
    {
-      if ( exists $args{filesize} and defined $args{filesize} )
-      {
-         $filesize = 0+$args{filesize};
-         delete $args{filesize};
-      } else {
-         $filesize = ( stat( $args{fh} ) )[ 7 ];
-      }
-      croak 'Bad file (too small)' if ( $filesize < 12 );
-      my ( $id ) = $proto->_read_fourcc( $args{fh} );
-      croak "Bad file ($id)" unless ( $id eq 'RIFF' );
+      $filesize = @_;
+      $filesize = 0+$filesize if ( defined $filesize );
+   } else {
+      $filesize = ( stat( $fh ) )[ 7 ];
    }
-   my ( $self ) = $proto->SUPER::new( %args, id => 'RIFF' );
-   croak 'Bad file: extra data at the end' if ( $filesize > $self->total_size );
-   croak 'Bad file: expected more data' if ( $filesize < $self->total_size );
+   croak 'Bad file: too small' if ( defined $filesize and $filesize < 12 );
+
+   my ( $id ) = $proto->_read_fourcc( $fh );
+   croak "Bad file ($id)" unless ( $id eq 'RIFF' );
+
+   my ( $self ) = $proto->SUPER::read( 'RIFF', $fh );
+
+   croak "Bad file: expected $filesize bytes, got " . $self->total_size
+      if ( defined $filesize and $filesize != $self->total_size );
+
    return $self;
 }
 

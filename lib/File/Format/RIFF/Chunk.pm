@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 use bytes;
@@ -11,29 +11,22 @@ use Carp;
 use vars qw/ $PACKFMT /;
 BEGIN { $PACKFMT = 'V' }
 
-our ( @params ) = qw/ id fh data /;
 
 sub new
 {
-   my ( $proto, %args ) = @_;
-   my ( $class ) = ref( $proto ) || $proto;
-
-   $args{id} = '    ' unless ( exists $args{id} );
-   my ( $id, $fh, $data ) = @args{ @params };
-   delete @args{ @params };
-   croak "Extraneous args passed to constructor" if ( keys %args );
-
-   my ( $self ) = bless { }, $class;
-   $self->id( $id );
-   if ( defined $fh )
-   {
-      croak "Cannot set data if fh is specified" if ( defined $data );
-      $self->_read_header( $fh );
-      $self->_read_data( $fh );
-   } else {
-      $self->data( $data );
-   }
+   my ( $proto, $id, $data ) = @_;
+   my ( $self ) = $proto->_new;
+   $self->id( defined $id ? $id : '    ' );
+   $self->data( $data );
    return $self;
+}
+
+
+sub _new
+{
+   my ( $proto ) = @_;
+   my ( $class ) = ref( $proto ) || $proto;
+   return bless { }, $class;
 }
 
 
@@ -120,7 +113,7 @@ sub _file_read
    my ( $proto, $fh, $ref, $expect ) = @_;
    my ( $got ) = read( $fh, $$ref, $expect );
    croak "File read error: $!" unless ( defined $got );
-   croak "File read error: got fewer bytes than expected ($got of $expect)"
+   croak "File read error: expected $expect bytes, got $got)"
       unless ( $got == $expect );
 }
 
@@ -173,6 +166,17 @@ sub dump
       ' size: ', $self->size, ' (', $self->total_size, '): ';
    ( $max and $self->size > $max ) ? print '[...]' : print $self->{data};
    print "\n";
+}
+
+
+sub read
+{
+   my ( $proto, $id, $fh ) = @_;
+   my ( $self ) = ref( $proto ) ? $proto : $proto->_new;
+   $self->id( $id );
+   $self->_read_header( $fh );
+   $self->_read_data( $fh );
+   return $self;
 }
 
 

@@ -2,31 +2,18 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
-use File::Format::RIFF::List;
 use Carp;
+use File::Format::RIFF::List;
 
 
 sub new
 {
-   my ( $proto, %args ) = @_;
-   my ( $type, $fh );
-   if ( exists $args{type} )
-   {
-      $type = $args{type};
-      delete $args{type};
-   }
-   croak "Cannot set data in Container constructor" if ( exists $args{data} );
-   $fh = $args{fh} if ( exists $args{fh} );
-   my ( $self ) = $proto->SUPER::new( %args );
-   if ( defined $fh )
-   {
-      croak "Cannot set type if fh is specified" if ( defined $type );
-   } else {
-      $self->type( $type );
-   }
+   my ( $proto, $type, $id, $data ) = @_;
+   my ( $self ) = $proto->SUPER::new( $id, $data );
+   $self->type( defined $type ? $type : '    ' );
    return $self;
 }
 
@@ -44,7 +31,7 @@ sub type
 sub id
 {
    my ( $self ) = shift;
-   croak "Cannot set id of $self->{id} chunk" if ( exists $self->{id} );
+   croak "Cannot set id of $self->{id} chunk" if ( @_ and exists $self->{id} );
    return $self->SUPER::id( @_ );
 }
 
@@ -173,8 +160,8 @@ sub _read_data
       my ( $id ) = $self->_read_fourcc( $fh );
       croak "Embedded RIFF chunks not allowed" if ( $id eq 'RIFF' );
       my ( $subchunk ) = ( $id eq 'LIST' )
-         ? new File::Format::RIFF::List( fh => $fh )
-         : new File::Format::RIFF::Chunk( id => $id, fh => $fh );
+         ? File::Format::RIFF::List->read( $fh )
+         : File::Format::RIFF::Chunk->read( $id, $fh );
       $to_read -= $subchunk->total_size;
       $self->push( $subchunk );
    }

@@ -1,6 +1,14 @@
+1.0.0:
+
 better test coverage
+(note to self: make sure to test both default params and explicit params to
+new; test both $class->read and $self->read; test read/write on file,
+string, and socket)
 
 documentation
+
+
+1.2.0:
 
 Way to "register" handler classes, such that the base Chunk class automatically
 re-blesses itself into that class.  e.g., LIST/INFO class, RIFF/WAVE class,
@@ -12,10 +20,16 @@ containers; multiple chunks having the same "id" and "type" in the same
 parent container can be differentiated by order; or, defaults to first match)
 ex: "INFO/IAUT"; if multiple IAUT's, "INFO/IAUT1" -- assume 0 if not specified
 
+RIFX
+
+
+1.4.0:
+
 ability to leave data on disk instead of slurping everything into memory
 
 ability to do buffered read/write of data
 
-RIFX
+
+1.6.0:
 
 way to validate that the appropriate chunks for a given type are present

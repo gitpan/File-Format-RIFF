@@ -2,17 +2,20 @@ package File::Format::RIFF::List;
 use base File::Format::RIFF::Container;
 
 
-our $VERSION = '0.02';
-
-
-use Carp;
+our $VERSION = '0.03';
 
 
 sub new
 {
-   my ( $proto, %args ) = @_;
-   croak "Cannot set id of LIST chunk" if ( exists $args{id} );
-   return $proto->SUPER::new( %args, id => 'LIST' );
+   my ( $proto, $type, $data ) = @_;
+   return $proto->SUPER::new( $type, 'LIST', $data );
+}
+
+
+sub read
+{
+   my ( $proto, $fh ) = @_;
+   return $proto->SUPER::read( 'LIST', $fh );
 }
 
 
