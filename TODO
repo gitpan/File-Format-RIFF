@@ -1,16 +1,8 @@
 better test coverage
 
-manipulate Container data by way of push, pop, splice, others?
-
-manipulate Chunk data by way of substr, others?
-
-consolidate and sanity-check all read( $fh .. ) calls
-
 documentation
 
 Carp instead of die
-
-sanity checking in case of a bad file format
 
 ability to specify chunks by their "path" (made up of "type"s of nested
 containers; multiple chunks having the same "id" and "type" in the same

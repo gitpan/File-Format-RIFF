@@ -1,5 +1,9 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.03  Sat Mar 19 18:03:13 CST 2005
+	- sanity checking in case of bad file
+	- push/pop/shift/unshift/splice/at methods for Container
+
 0.02  Fri Mar 18 21:54:37 CST 2005
 	- basic functionality
 

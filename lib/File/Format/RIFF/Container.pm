@@ -62,6 +62,57 @@ sub size
 }
 
 
+sub splice
+{
+   my ( $self, $offset, $length, @elts ) = @_;
+   map { die "Can only add Chunk or List elements"
+      unless ( ref( $_ ) and $_->isa( 'File::Format::RIFF::Chunk' ) ) } @elts;
+   return ( @_ > 3 )
+      ? splice( @{ $self->{data} }, $offset, $length, @elts )
+      : ( @_ == 3 )
+         ? splice( @{ $self->{data} }, $offset, $length )
+         : ( @_ == 2 )
+            ? splice( @{ $self->{data} }, $offset )
+            : splice( @{ $self->{data} } );
+}
+
+
+sub push
+{
+   my ( $self, @elts ) = @_;
+   return $self->splice( scalar( @{ $self->{data} } ), 0, @elts );
+}
+
+
+sub pop
+{
+   my ( $self ) = @_;
+   return $self->splice( -1 );
+}
+
+
+sub shift
+{
+   my ( $self ) = @_;
+   return $self->splice( 0, 1 );
+}
+
+
+sub unshift
+{
+   my ( $self, @elts ) = @_;
+   return $self->splice( 0, 0, @elts );
+}
+
+
+sub at
+{
+   my ( $self, $i ) = @_[ 0 .. 1 ];
+   return $self->splice( $i, 1, $_[ 0 ] ) if ( @_ );
+   return $self->{data}->[ $i ];
+}
+
+
 sub _read_header
 {
    my ( $self, $fh ) = @_;
@@ -84,6 +135,7 @@ sub _read_data
 {
    my ( $self, $fh ) = @_;
    my ( $to_read ) = $self->{size};
+   $self->{data} = [ ];
    while ( $to_read )
    {
       my ( $id ) = $self->_read_fourcc( $fh );
@@ -92,7 +144,7 @@ sub _read_data
          ? new File::Format::RIFF::List( fh => $fh )
          : new File::Format::RIFF::Chunk( id => $id, fh => $fh );
       $to_read -= $subchunk->total_size;
-      push( @{ $self->{data} }, $subchunk );
+      $self->push( $subchunk );
    }
 }
 
@@ -124,7 +176,7 @@ sub dump
 
 =head1 NAME
 
-Tibco::Rv::Container - RIFF Container (LISTs and RIFFs)
+File::Format::RIFF::Container - RIFF Container (LISTs and RIFFs)
 
 =head1 SYNOPSIS
 

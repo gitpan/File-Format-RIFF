@@ -6,19 +6,24 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 sub new
 {
    my ( $proto, %args ) = @_;
    die "Cannot set id of RIFF chunk" if ( exists $args{id} );
+   my ( $filesize );
    if ( exists $args{fh} and defined $args{fh} )
    {
+      $filesize = ( stat( $args{fh} ) )[ 7 ];
+      die 'Bad file (too small)' if ( $filesize < 12 );
       my ( $id ) = $proto->_read_fourcc( $args{fh} );
       die "Bad file ($id)" unless ( $id eq 'RIFF' );
    }
-   return $proto->SUPER::new( %args, id => 'RIFF' );
+   my ( $self ) = $proto->SUPER::new( %args, id => 'RIFF' );
+   die "Bad file: extra data at the end" if ( $filesize > $self->total_size );
+   return $self;
 }
 
 
@@ -48,7 +53,7 @@ Paul Sturm E<lt>I<sturm@branewave.com>E<gt>
 
 =head1 WEBSITE
 
-http://www.branewave.com/perl
+L<http://branewave.com/perl>
 
 =head1 COPYRIGHT
 

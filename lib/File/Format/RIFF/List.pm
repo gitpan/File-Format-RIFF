@@ -20,7 +20,7 @@ sub new
 
 =head1 NAME
 
-Tibco::Rv::List - RIFF LIST
+File::Format::RIFF::List - RIFF LIST
 
 =head1 SYNOPSIS
 

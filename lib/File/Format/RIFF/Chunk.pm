@@ -3,7 +3,7 @@ package File::Format::RIFF::Chunk;
 
 use bytes;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 use vars qw/ $PACKFMT /;
@@ -16,6 +16,7 @@ sub new
    my ( $proto, %args ) = @_;
    my ( $class ) = ref( $proto ) || $proto;
 
+   $args{id} = '    ' unless ( exists $args{id} );
    my ( $id, $fh, $data ) = @args{ @params };
    delete @args{ @params };
    die "Extraneous args passed to constructor" if ( keys %args );
@@ -94,19 +95,36 @@ sub _read_data
 {
    my ( $self, $fh ) = @_;
    my ( $sz ) = $self->size;
-   read( $fh, $self->{data}, $sz );
+   $self->_file_read( $fh, \$self->{data}, $sz );
    return unless ( $sz % 2 );
 
    my ( $x );
-   read( $fh, $x, 1 );
+   $self->_file_read( $fh, \$x, 1 );
 }
 
 
 sub _write_data
 {
    my ( $self, $fh ) = @_;
-   print { $fh } $self->{data};
-   print { $fh } "\0" if ( $self->{size} % 2 );
+   $self->_file_write( $fh, $self->{data} );
+   $self->_file_write( $fh, "\0" ) if ( $self->{size} % 2 );
+}
+
+
+sub _file_read
+{
+   my ( $proto, $fh, $ref, $expect ) = @_;
+   my ( $got ) = read( $fh, $$ref, $expect );
+   die "File read error: $!" unless ( defined $got );
+   die "File read error: got fewer bytes than expected ($got of $expect)"
+      unless ( $got == $expect );
+}
+
+
+sub _file_write
+{
+   my ( $proto, $fh, @data ) = @_;
+   print { $fh } @data or die 'Could not write to file';
 }
 
 
@@ -114,7 +132,7 @@ sub _read_fourcc
 {
    my ( $proto, $fh ) = @_;
    my ( $fourcc );
-   read( $fh, $fourcc, 4 );
+   $proto->_file_read( $fh, \$fourcc, 4 );
    return $fourcc;
 }
 
@@ -122,7 +140,7 @@ sub _read_fourcc
 sub _write_fourcc
 {
    my ( $self, $fh, $fourcc ) = @_;
-   print { $fh } $fourcc;
+   $self->_file_write( $fh, $fourcc );
 }
 
 
@@ -130,7 +148,7 @@ sub _read_size
 {
    my ( $proto, $fh ) = @_;
    my ( $size );
-   read( $fh, $size, 4 );
+   $proto->_file_read( $fh, \$size, 4 );
    return unpack( $PACKFMT, $size );
 }
 
@@ -138,7 +156,7 @@ sub _read_size
 sub _write_size
 {
    my ( $self, $fh, $size ) = @_;
-   print { $fh } pack( $PACKFMT, $size );
+   $self->_file_write( $fh, pack( $PACKFMT, $size ) );
 }
 
 
@@ -161,7 +179,7 @@ sub dump
 
 =head1 NAME
 
-Tibco::Rv::Chunk - RIFF Chunk
+File::Format::RIFF::Chunk - RIFF Chunk
 
 =head1 SYNOPSIS
 
