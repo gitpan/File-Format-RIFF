@@ -6,29 +6,33 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 use Carp;
 
 
-#our @CARP_NOT = qw/ File::Format::RIFF::Container /;
-
-
 sub new
 {
    my ( $proto, %args ) = @_;
-   die "Cannot set id of RIFF chunk" if ( exists $args{id} );
+   croak 'Cannot set id of RIFF chunk' if ( exists $args{id} );
    my ( $filesize ) = 0;
    if ( exists $args{fh} and defined $args{fh} )
    {
-      $filesize = ( stat( $args{fh} ) )[ 7 ];
-      die 'Bad file (too small)' if ( $filesize < 12 );
+      if ( exists $args{filesize} and defined $args{filesize} )
+      {
+         $filesize = 0+$args{filesize};
+         delete $args{filesize};
+      } else {
+         $filesize = ( stat( $args{fh} ) )[ 7 ];
+      }
+      croak 'Bad file (too small)' if ( $filesize < 12 );
       my ( $id ) = $proto->_read_fourcc( $args{fh} );
-      die "Bad file ($id)" unless ( $id eq 'RIFF' );
+      croak "Bad file ($id)" unless ( $id eq 'RIFF' );
    }
    my ( $self ) = $proto->SUPER::new( %args, id => 'RIFF' );
-   die "Bad file: extra data at the end" if ( $filesize > $self->total_size );
+   croak 'Bad file: extra data at the end' if ( $filesize > $self->total_size );
+   croak 'Bad file: expected more data' if ( $filesize < $self->total_size );
    return $self;
 }
 

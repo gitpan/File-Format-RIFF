@@ -1,5 +1,10 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.05  Tue Mar 29 22:51:21 CST 2005
+	- RIFF->new: in-memory string filehandles if you pass in 'filesize' arg
+	- more Carp/croak instead of die
+	- move module version to lib/File/Format/RIFF/Version.pm
+
 0.04  Tue Mar 29 21:47:56 CST 2005
 	- Carp/croak instead of die
 	- fixed up some 'use strict' warnings
