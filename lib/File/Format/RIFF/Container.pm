@@ -2,7 +2,7 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 use Carp;
@@ -206,7 +206,95 @@ File::Format::RIFF::Container - RIFF Container (LISTs and RIFFs)
 
 =head1 SYNOPSIS
 
+You should not instantiate a C<File::Format::RIFF::Container> directly;
+instead, you should instantiate one of its subclasses, either a
+L<File::Format::RIFF> object, or a L<File::Format::RIFF::List> object.
+
 =head1 DESCRIPTION
+
+C<File::Format::RIFF::Container> is a base class for both RIFF objects
+and RIFF lists.  It is, essentially, an array of other RIFF lists and/or
+RIFF chunks, and you can add, change, delete, and read them.
+
+=head1 METHODS
+
+=over 4
+
+=item my ( $type ) = $container->type;
+
+fixme
+
+=item $container->type( $type );
+
+fixme
+
+=item my ( $id ) = $container->id;
+
+fixme (will be either LIST or RIFF)
+
+=item my ( $data ) = $container->data;
+
+fixme
+
+=item $container->data( $data );
+
+fixme
+
+=item my ( $numChunks ) = $container->numChunks;
+
+fixme
+
+=item my ( $size ) = $container->size;
+
+fixme
+
+=item my ( @replaced ) = $self->splice( $offset, $length, $list );
+
+fixme
+
+=item $container->push( @chunks );
+
+fixme
+
+=item my ( $chunk ) = $container->pop;
+
+fixme
+
+=item $container->unshift( @chunks );
+
+fixme
+
+=item my ( $chunk ) = $container->shift;
+
+fixme
+
+=item my ( $chunk ) = $container->at( $i );
+
+fixme
+
+=item my ( $newChunk ) = $container->addChunk( $id, $data );
+
+fixme
+
+=item my ( $newList ) = $container->addList( $type, $data );
+
+fixme
+
+=item $container->dump;
+
+fixme
+
+=back
+
+=head1 SEE ALSO
+
+=over 4
+
+=item L<File::Format::RIFF>
+
+=item L<File::Format::RIFF::List>
+
+=back
 
 =head1 AUTHOR
 

@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 use bytes;
@@ -187,11 +187,67 @@ sub read
 
 =head1 NAME
 
-File::Format::RIFF::Chunk - RIFF Chunk
+File::Format::RIFF::Chunk - a single RIFF chunk
 
 =head1 SYNOPSIS
 
+   use File::Format::RIFF;
+
+   my ( $chunk ) = new File::Format::RIFF::Chunk;
+   $chunk->id( 'stuf' );
+   $chunk->data( 'here is some stuff' );
+
+   ... some $riff ...
+
+   $riff->push( $chunk );
+
 =head1 DESCRIPTION
+
+A C<File::Format::RIFF::Chunk> is a single chunk of data in a RIFF file.  It
+has an identifier and one piece of scalar data.  The id must be a
+four character code, and the data can be any piece of scalar data you wish
+to store, in any format (it is treated as opaque binary data, so you must
+interpret it yourself).
+
+=head1 CONSTRUCTOR
+
+=over 4
+
+=item my ( $chunk ) = new File::Format::RIFF::Chunk( $id, $data );
+
+fixme
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item my ( $id ) = $chunk->id;
+
+fixme
+
+=item $chunk->id( 'abcd' );
+
+fixme
+
+=item my ( $data ) = $chunk->data;
+
+fixme
+
+=item $chunk->data( $data );
+
+fixme
+
+=item my ( $size ) = $chunk->size;
+
+fixme
+
+=back
+
+=item $chunk->dump;
+
+fixme
 
 =head1 AUTHOR
 

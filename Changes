@@ -1,5 +1,8 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.9.1  Mon Apr  4 00:24:47 CDT 2005
+	- start on documentation
+
 0.9.0  Wed Mar 30 22:37:20 CST 2005
 	- 'new' for creating new chunks; 'read' for reading from a filehandle
 	- fix bug when getting id of container
