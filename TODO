@@ -1,0 +1,24 @@
+better test coverage
+
+manipulate Container data by way of push, pop, splice, others?
+
+manipulate Chunk data by way of substr, others?
+
+consolidate and sanity-check all read( $fh .. ) calls
+
+documentation
+
+Carp instead of die
+
+sanity checking in case of a bad file format
+
+ability to specify chunks by their "path" (made up of "type"s of nested
+containers; multiple chunks having the same "id" and "type" in the same
+parent container can be differentiated by order; or, defaults to first match)
+ex: "INFO/IAUT"; if multiple IAUT's, "INFO/IAUT1" -- assume 0 if not specified
+
+ability to leave data on disk instead of slurping everything into memory
+
+ability to do buffered read/write of data
+
+RIFX

@@ -1,0 +1,9 @@
+Revision history for Perl extension File::Format::RIFF.
+
+0.02  Fri Mar 18 21:54:37 CST 2005
+	- basic functionality
+
+0.01  Tue Mar 15 21:58:05 2005
+	- original version; created by h2xs 1.22 with options
+		-AX -b 5.6.0 --skip-exporter --skip-autoloader -n File::Format::RIFF
+
