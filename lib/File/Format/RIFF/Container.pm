@@ -2,9 +2,11 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-use File::Format::RIFF::List;
+our $VERSION = '0.02';
 
-our $VERSION = '0.01';
+
+use File::Format::RIFF::List;
+use Carp;
 
 
 sub new
@@ -16,12 +18,12 @@ sub new
       $type = $args{type};
       delete $args{type};
    }
-   die "Cannot set data in Container constructor" if ( exists $args{data} );
+   croak "Cannot set data in Container constructor" if ( exists $args{data} );
    $fh = $args{fh} if ( exists $args{fh} );
    my ( $self ) = $proto->SUPER::new( %args );
    if ( defined $fh )
    {
-      die "Cannot set type if fh is specified" if ( defined $type );
+      croak "Cannot set type if fh is specified" if ( defined $type );
    } else {
       $self->type( $type );
    }
@@ -32,10 +34,18 @@ sub new
 sub type
 {
    my ( $self ) = shift;
-   return return $self->{type} unless ( @_ );
+   return $self->{type} unless ( @_ );
    my ( $type ) = shift;
-   die "Length of type must be 4" unless ( length( $type ) == 4 );
+   croak "Length of type must be 4" unless ( length( $type ) == 4 );
    $self->{type} = $type;
+}
+
+
+sub id
+{
+   my ( $self ) = shift;
+   croak "Cannot set id of $self->{id} chunk" if ( exists $self->{id} );
+   return $self->SUPER::id( @_ );
 }
 
 
@@ -48,8 +58,19 @@ sub total_size
 
 sub data
 {
+   my ( $self ) = shift;
+   return @{ $self->{data} } unless ( @_ );
+   my ( $data ) = @_;
+   $data = [ ] unless ( defined $data and ref( $data ) eq 'ARRAY' );
+   $self->{data} = [ ];
+   $self->push( @$data );
+}
+
+
+sub numChunks
+{
    my ( $self ) = @_;
-   return @{ $self->{data} };
+   return scalar( @{ $self->{data} } );
 }
 
 
@@ -65,7 +86,7 @@ sub size
 sub splice
 {
    my ( $self, $offset, $length, @elts ) = @_;
-   map { die "Can only add Chunk or List elements"
+   map { croak "Can only add Chunk or List elements"
       unless ( ref( $_ ) and $_->isa( 'File::Format::RIFF::Chunk' ) ) } @elts;
    return ( @_ > 3 )
       ? splice( @{ $self->{data} }, $offset, $length, @elts )
@@ -91,13 +112,6 @@ sub pop
 }
 
 
-sub shift
-{
-   my ( $self ) = @_;
-   return $self->splice( 0, 1 );
-}
-
-
 sub unshift
 {
    my ( $self, @elts ) = @_;
@@ -110,6 +124,24 @@ sub at
    my ( $self, $i ) = @_[ 0 .. 1 ];
    return $self->splice( $i, 1, $_[ 0 ] ) if ( @_ );
    return $self->{data}->[ $i ];
+}
+
+
+sub addChunk
+{
+   my ( $self ) = shift;
+   my ( $chk ) = new File::Format::RIFF::Chunk( @_ );
+   $self->push( $chk );
+   return $chk;
+}
+
+
+sub addList
+{
+   my ( $self ) = shift;
+   my ( $ctr ) = new File::Format::RIFF::List( @_ );
+   $self->push( $ctr );
+   return $ctr;
 }
 
 
@@ -139,7 +171,7 @@ sub _read_data
    while ( $to_read )
    {
       my ( $id ) = $self->_read_fourcc( $fh );
-      die "Embedded RIFF chunks not allowed" if ( $id eq 'RIFF' );
+      croak "Embedded RIFF chunks not allowed" if ( $id eq 'RIFF' );
       my ( $subchunk ) = ( $id eq 'LIST' )
          ? new File::Format::RIFF::List( fh => $fh )
          : new File::Format::RIFF::Chunk( id => $id, fh => $fh );
@@ -166,6 +198,13 @@ sub dump
 
    ++ $indent;
    map { $_->dump( $max, $indent ) } @{ $self->{data} };
+}
+
+
+sub shift
+{
+   my ( $self ) = @_;
+   return $self->splice( 0, 1 );
 }
 
 

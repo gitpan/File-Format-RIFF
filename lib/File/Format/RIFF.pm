@@ -6,14 +6,20 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
+
+
+use Carp;
+
+
+#our @CARP_NOT = qw/ File::Format::RIFF::Container /;
 
 
 sub new
 {
    my ( $proto, %args ) = @_;
    die "Cannot set id of RIFF chunk" if ( exists $args{id} );
-   my ( $filesize );
+   my ( $filesize ) = 0;
    if ( exists $args{fh} and defined $args{fh} )
    {
       $filesize = ( stat( $args{fh} ) )[ 7 ];

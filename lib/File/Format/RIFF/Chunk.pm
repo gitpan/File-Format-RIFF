@@ -1,9 +1,11 @@
 package File::Format::RIFF::Chunk;
 
 
-use bytes;
+our $VERSION = '0.03';
 
-our $VERSION = '0.02';
+
+use bytes;
+use Carp;
 
 
 use vars qw/ $PACKFMT /;
@@ -19,13 +21,13 @@ sub new
    $args{id} = '    ' unless ( exists $args{id} );
    my ( $id, $fh, $data ) = @args{ @params };
    delete @args{ @params };
-   die "Extraneous args passed to constructor" if ( keys %args );
+   croak "Extraneous args passed to constructor" if ( keys %args );
 
    my ( $self ) = bless { }, $class;
    $self->id( $id );
    if ( defined $fh )
    {
-      die "Cannot set data if fh is specified" if ( defined $data );
+      croak "Cannot set data if fh is specified" if ( defined $data );
       $self->_read_header( $fh );
       $self->_read_data( $fh );
    } else {
@@ -48,7 +50,7 @@ sub id
    my ( $self ) = shift;
    return $self->{id} unless ( @_ );
    my ( $id ) = shift;
-   die "Length of id must be 4" unless ( length( $id ) == 4 );
+   croak "Length of id must be 4" unless ( length( $id ) == 4 );
    $self->{id} = $id;
 }
 
@@ -57,7 +59,9 @@ sub data
 {
    my ( $self ) = shift;
    return $self->{data} unless ( @_ );
-   $self->{size} = length( $self->{data} = shift );
+   my ( $data ) = shift;
+   $data = '' unless ( defined $data );
+   $self->{size} = length( $self->{data} = $data );
 }
 
 
@@ -115,8 +119,8 @@ sub _file_read
 {
    my ( $proto, $fh, $ref, $expect ) = @_;
    my ( $got ) = read( $fh, $$ref, $expect );
-   die "File read error: $!" unless ( defined $got );
-   die "File read error: got fewer bytes than expected ($got of $expect)"
+   croak "File read error: $!" unless ( defined $got );
+   croak "File read error: got fewer bytes than expected ($got of $expect)"
       unless ( $got == $expect );
 }
 
@@ -124,7 +128,7 @@ sub _file_read
 sub _file_write
 {
    my ( $proto, $fh, @data ) = @_;
-   print { $fh } @data or die 'Could not write to file';
+   print { $fh } @data or croak 'Could not write to file';
 }
 
 

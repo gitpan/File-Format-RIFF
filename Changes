@@ -1,5 +1,11 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.04  Tue Mar 29 21:47:56 CST 2005
+	- Carp/croak instead of die
+	- fixed up some 'use strict' warnings
+	- Container->data( $data ) now clears and does Container->push( @$data )
+	- implement addList, addChunk, numChunks
+
 0.03  Sat Mar 19 18:03:13 CST 2005
 	- sanity checking in case of bad file
 	- push/pop/shift/unshift/splice/at methods for Container

@@ -2,7 +2,10 @@ better test coverage
 
 documentation
 
-Carp instead of die
+Way to "register" handler classes, such that the base Chunk class automatically
+re-blesses itself into that class.  e.g., LIST/INFO class, RIFF/WAVE class,
+IENG class, etc.  Chunk should do the read_header/data, and then call an oninit
+List class should do the same for LISTs.
 
 ability to specify chunks by their "path" (made up of "type"s of nested
 containers; multiple chunks having the same "id" and "type" in the same
@@ -14,3 +17,5 @@ ability to leave data on disk instead of slurping everything into memory
 ability to do buffered read/write of data
 
 RIFX
+
+way to validate that the appropriate chunks for a given type are present
