@@ -1,5 +1,10 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.9.2  Tue Apr 26 19:36:29 CDT 2005
+	- fixed bug in RIFF::read when $filesize was specified
+	- fixed bug in Container::at when used as a getter
+	- documentation pretty much done
+
 0.9.1  Mon Apr  4 00:24:47 CDT 2005
 	- start on documentation
 

@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 use bytes;
@@ -197,9 +197,9 @@ File::Format::RIFF::Chunk - a single RIFF chunk
    $chunk->id( 'stuf' );
    $chunk->data( 'here is some stuff' );
 
-   ... some $riff ...
+   ... some $container ...
 
-   $riff->push( $chunk );
+   $container->push( $chunk );
 
 =head1 DESCRIPTION
 
@@ -213,9 +213,12 @@ interpret it yourself).
 
 =over 4
 
-=item my ( $chunk ) = new File::Format::RIFF::Chunk( $id, $data );
+=item $chunk = new File::Format::RIFF::Chunk( $id, $data );
 
-fixme
+Creates a new File::Format::RIFF::Chunk object.  C<$id> is a four character
+code that identifies the type of data.  If C<$id> is not specified, it
+defaults to '    '.  C<$data> is a scalar, treated as opaque binary data.
+If C<$data> is undef or not specified, it defaults to ''.
 
 =back
 
@@ -223,31 +226,35 @@ fixme
 
 =over 4
 
-=item my ( $id ) = $chunk->id;
+=item $id = $chunk->id;
 
-fixme
+Returns the id of <$chunk>.
 
 =item $chunk->id( 'abcd' );
 
-fixme
+Sets the id of C<$chunk>.  C<$id> must be a four character code that
+identifies the type of data.
 
-=item my ( $data ) = $chunk->data;
+=item $data = $chunk->data;
 
-fixme
+Returns the data of C<$chunk>.
 
 =item $chunk->data( $data );
 
-fixme
+Sets the data of C<$chunk>.  C<$data> is treated as a piece of opaque
+binary data, not modified or interpreted in any way.
 
-=item my ( $size ) = $chunk->size;
+=item $size = $chunk->size;
 
-fixme
+Returns the size (in bytes) of C<$chunk>'s data.
 
 =back
 
-=item $chunk->dump;
+=item $chunk->dump( $max );
 
-fixme
+Prints a string representation of C<$chunk> to STDOUT.  If the data is
+larger than C<$max> bytes, prints '[...]' instead of the actual data.  If
+C<$max> is not specified or C<undef>, it defaults to 64.
 
 =head1 AUTHOR
 

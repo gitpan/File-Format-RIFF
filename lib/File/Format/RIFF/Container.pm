@@ -2,7 +2,7 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.06';
 
 
 use Carp;
@@ -108,8 +108,9 @@ sub unshift
 
 sub at
 {
-   my ( $self, $i ) = @_[ 0 .. 1 ];
-   return $self->splice( $i, 1, $_[ 0 ] ) if ( @_ );
+   my ( $self ) = shift;
+   my ( $i ) = shift;
+   return $self->splice( $i, 1, shift ) if ( @_ );
    return $self->{data}->[ $i ];
 }
 
@@ -202,12 +203,12 @@ sub shift
 
 =head1 NAME
 
-File::Format::RIFF::Container - RIFF Container (LISTs and RIFFs)
+File::Format::RIFF::Container - RIFF Container (Lists and RIFFs)
 
 =head1 SYNOPSIS
 
 You should not instantiate a C<File::Format::RIFF::Container> directly;
-instead, you should instantiate one of its subclasses, either a
+instead, you should instantiate one of its subclasses: either a
 L<File::Format::RIFF> object, or a L<File::Format::RIFF::List> object.
 
 =head1 DESCRIPTION
@@ -220,69 +221,76 @@ RIFF chunks, and you can add, change, delete, and read them.
 
 =over 4
 
-=item my ( $type ) = $container->type;
+=item $type = $container->type;
 
-fixme
+Returns the type of C<$container>.
 
 =item $container->type( $type );
 
-fixme
+Sets the type of C<$container>.  C<$type> must be a four character code, which
+represents what data will be found in C<$container>.
 
-=item my ( $id ) = $container->id;
+=item $id = $container->id;
 
-fixme (will be either LIST or RIFF)
+Returns the id of C<$container>.  C<$container> must be either a RIFF object
+or a List object, so C<$id> will be 'RIFF' or 'LIST', respectively.
 
-=item my ( $data ) = $container->data;
+=item @data = $container->data;
 
-fixme
+Returns the RIFF chunks and/or RIFF lists contained by C<$container>.
 
 =item $container->data( $data );
 
-fixme
+Clears out any existing RIFF chunks contained by C<$container> and replaces
+them with C<$data>.  C<$data> must be an array reference containing some
+number of RIFF lists and/or RIFF chunks.
 
-=item my ( $numChunks ) = $container->numChunks;
+=item $numChunks = $container->numChunks;
 
-fixme
+Returns the number of RIFF lists and/or RIFF chunks contained by
+C<$container>.
 
-=item my ( $size ) = $container->size;
+=item $size = $container->size;
 
-fixme
+Returns the size (in bytes) of C<$container>'s data, when written to a file.
 
-=item my ( @replaced ) = $self->splice( $offset, $length, $list );
-
-fixme
-
+=item @replaced = $self->splice( $offset, $length, @list );
 =item $container->push( @chunks );
-
-fixme
-
-=item my ( $chunk ) = $container->pop;
-
-fixme
-
+=item $chunk = $container->pop;
 =item $container->unshift( @chunks );
+=item $chunk = $container->shift;
 
-fixme
+C<splice>, C<push>, C<pop>, C<unshift>, and C<shift> operate analogously
+to the same-named functions in core perl, acting on C<$container>'s array
+of RIFF lists and/or RIFF chunks.  All items added must be RIFF lists or
+RIFF chunks.
 
-=item my ( $chunk ) = $container->shift;
+=item $chunk = $container->at( $i );
 
-fixme
+Returns the RIFF list or RIFF chunk at the C<$i>th position in
+C<$container>'s array.
 
-=item my ( $chunk ) = $container->at( $i );
+=item $container->at( $i, $chunk );
 
-fixme
+Sets the C<$i>th position in C<$container>'s array to C<$chunk>, replacing
+the previous item.  C<$chunk> must be a RIFF list or a RIFF chunk.
 
-=item my ( $newChunk ) = $container->addChunk( $id, $data );
+=item $newChunk = $container->addChunk( $id, $data );
 
-fixme
+Creates a new RIFF chunk object with the given C<$id> and C<$data>, appending
+it to C<$container>'s array.  Returns the just-created RIFF chunk.
 
-=item my ( $newList ) = $container->addList( $type, $data );
+=item $newList = $container->addList( $type, $data );
 
-fixme
+Creates a new List object with the given C<$type> and C<$data>, appending
+it to C<$container>'s array.  Returns the just-created RIFF list.
 
-=item $container->dump;
+=item $container->dump( $max );
 
-fixme
+Prints a string representation of C<$container> to STDOUT, recursively
+printing contained items.  If a RIFF chunk's data is larger than C<$max> bytes,
+prints '[...]' instead of the actual data.  If C<$max> is not specified or
+C<undef>, it defaults to 64.
 
 =back
 

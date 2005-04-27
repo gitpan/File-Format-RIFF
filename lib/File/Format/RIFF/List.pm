@@ -2,7 +2,7 @@ package File::Format::RIFF::List;
 use base File::Format::RIFF::Container;
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub new
@@ -37,24 +37,28 @@ File::Format::RIFF::List - a single RIFF list
    $list->addList( 'alst' )->addChunk( xyzw => 'more data' );
    print $list->numChunks, "\n";
 
-   ... some $riff ...
+   ... some $container ...
 
-   $riff->push( $list );
+   $container->push( $list );
 
 =head1 DESCRIPTION
 
 A C<File::Format::RIFF::List> is a list of data in a RIFF file.  It has an
 identifier, a type, and an array of data.  The id is always 'LIST'.  The
-type must be a four character code, and the data is an array of other lists
-and/or RIFF chunks.
+type must be a four character code, and the data is an array of other RIFF
+lists and/or RIFF chunks.
 
 =head1 CONSTRUCTOR
 
 =over 4
 
-=item my ( $list ) = new File::Format::RIFF::List( $type, $data );
+=item $list = new File::Format::RIFF::List( $type, $data );
 
-fixme
+Creates a new File::Format::RIFF::List object.  C<$type> is a four character
+code that identifies the type of this RIFF list.  If C<$type> is not
+specified, it defaults to '    '.  C<$data> must be an array reference
+containing some number of RIFF lists and/or RIFF chunks.  IF C<$data> is
+undef or not specified, then the new list object is initialized empty.
 
 =back
 
@@ -63,7 +67,7 @@ fixme
 =over 4
 
 C<File::Format::RIFF::List> inherits from C<File::Format::RIFF::Container>,
-so all methods available for Containers can be used on RIFF objects.  A
+so all methods available for Containers can be used on RIFF lists.  A
 Container essentially contains an array of RIFF lists and/or RIFF chunks.
 See the L<File::Format::RIFF::Container> man page for more information.
 

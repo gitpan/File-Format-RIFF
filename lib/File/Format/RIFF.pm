@@ -5,7 +5,7 @@ use base File::Format::RIFF::Container;
 use 5.006;
 use Carp;
 
-our $VERSION = '0.07';
+our $VERSION = '0.10';
 
 
 sub new
@@ -23,7 +23,7 @@ sub read
    my ( $filesize );
    if ( @_ )
    {
-      $filesize = @_;
+      ( $filesize ) = @_;
       $filesize = 0+$filesize if ( defined $filesize );
    } else {
       $filesize = ( stat( $fh ) )[ 7 ];
@@ -79,7 +79,7 @@ File Format.  You can read, manipulate, and write RIFF files.
 
 =over 4
 
-=item my ( $riff ) = new File::Format::RIFF( $type, $data );
+=item $riff = new File::Format::RIFF( $type, $data );
 
 Creates a new File::Format::RIFF object.  C<$type> is a four character code
 that identifies the type of this particular RIFF file.  Certain types are
@@ -89,11 +89,11 @@ be an array reference containing some number of RIFF lists and/or RIFF
 chunks.  If C<$data> is C<undef> or not specified, then the new RIFF object
 is initialized empty.
 
-=item my ( $riff ) = File::Format::RIFF->read( $fh, $filesize );
+=item $riff = File::Format::RIFF->read( $fh, $filesize );
 
 Reads and parses an existing RIFF file from the given filehandle C<$fh>.  An
 exception will be thrown if the file is not a valid RIFF file.  C<$filesize>
-controls on aspect of the file format checking -- if C<$filesize> is not
+controls one aspect of the file format checking -- if C<$filesize> is not
 specified, then C<stat> will be called on C<$fh> to determine how much data
 to expect.  You may explicitly specify how much data to expect by passing
 in that value as C<$filesize>.  In either case, the amount of data read will
@@ -102,7 +102,7 @@ throw an exception.  If you do not wish it to make this check, pass in C<undef>
 for C<$filesize>.
 
 Please note, if you wish to read an "in memory" filehandle, such as by doing
-this: C<open( $fh, '>', \$variable )>, you may do so, but you must pass in
+this: C<open( $fh, 'E<gt>', \$variable )>, you may do so, but you must pass in
 C<length( $variable )> for C<$filesize>, because filehandles opened this way
 to do not support the C<stat> call.
 
@@ -122,7 +122,11 @@ much data to expect.
 C<File::Format::RIFF> inherits from C<File::Format::RIFF::Container>, so all
 methods available for Containers can be used on RIFF objects.  A Container
 essentially contains an array of RIFF lists and/or RIFF chunks.  See
-the L<File::Format::RIFF::Container> man page for more information.
+the L<File::Format::RIFF::Container> page for more information.
+
+=item L<File::Format::RIFF::List>
+
+=item L<File::Format::RIFF::Chunk>
 
 =back
 
