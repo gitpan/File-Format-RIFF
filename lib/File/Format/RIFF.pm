@@ -5,7 +5,7 @@ use base File::Format::RIFF::Container;
 use 5.006;
 use Carp;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 
 sub new
@@ -30,6 +30,7 @@ sub read
    }
    croak 'Bad file: too small' if ( defined $filesize and $filesize < 12 );
 
+   binmode( $fh );
    my ( $id ) = $proto->_read_fourcc( $fh );
    croak "Bad file ($id)" unless ( $id eq 'RIFF' );
 
@@ -84,7 +85,7 @@ File Format.  You can read, manipulate, and write RIFF files.
 Creates a new File::Format::RIFF object.  C<$type> is a four character code
 that identifies the type of this particular RIFF file.  Certain types are
 defined to have a format, specifying which chunks must appear (e.g., WAVE
-files).  If C<$type> is not specified, it defaults to '    '.  C<$data> must
+files).  If C<$type> is not specified, it defaults to C<'    '>.  C<$data> must
 be an array reference containing some number of RIFF lists and/or RIFF
 chunks.  If C<$data> is C<undef> or not specified, then the new RIFF object
 is initialized empty.
@@ -102,7 +103,7 @@ throw an exception.  If you do not wish it to make this check, pass in C<undef>
 for C<$filesize>.
 
 Please note, if you wish to read an "in memory" filehandle, such as by doing
-this: C<open( $fh, 'E<gt>', \$variable )>, you may do so, but you must pass in
+this: C<open( $fh, 'E<lt>', \$variable )>, you may do so, but you must pass in
 C<length( $variable )> for C<$filesize>, because filehandles opened this way
 to do not support the C<stat> call.
 
@@ -129,6 +130,12 @@ the L<File::Format::RIFF::Container> page for more information.
 =item L<File::Format::RIFF::Chunk>
 
 =back
+
+=head1 SUPPORT
+
+The author monitors the CPAN forum at:
+
+L<http://www.cpanforum.com/dist/File-Format-RIFF>
 
 =head1 AUTHOR
 

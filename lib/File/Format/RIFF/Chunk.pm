@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 
 use bytes;
@@ -113,7 +113,7 @@ sub _file_read
    my ( $proto, $fh, $ref, $expect ) = @_;
    my ( $got ) = read( $fh, $$ref, $expect );
    croak "File read error: $!" unless ( defined $got );
-   croak "File read error: expected $expect bytes, got $got)"
+   croak "File read error: expected $expect bytes, got $got"
       unless ( $got == $expect );
 }
 
@@ -217,7 +217,7 @@ interpret it yourself).
 
 Creates a new File::Format::RIFF::Chunk object.  C<$id> is a four character
 code that identifies the type of data.  If C<$id> is not specified, it
-defaults to '    '.  C<$data> is a scalar, treated as opaque binary data.
+defaults to C<'    '>.  C<$data> is a scalar, treated as opaque binary data.
 If C<$data> is undef or not specified, it defaults to ''.
 
 =back

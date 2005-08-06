@@ -2,7 +2,7 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 
 use Carp;
@@ -255,9 +255,13 @@ C<$container>.
 Returns the size (in bytes) of C<$container>'s data, when written to a file.
 
 =item @replaced = $self->splice( $offset, $length, @list );
+
 =item $container->push( @chunks );
+
 =item $chunk = $container->pop;
+
 =item $container->unshift( @chunks );
+
 =item $chunk = $container->shift;
 
 C<splice>, C<push>, C<pop>, C<unshift>, and C<shift> operate analogously
@@ -291,6 +295,17 @@ Prints a string representation of C<$container> to STDOUT, recursively
 printing contained items.  If a RIFF chunk's data is larger than C<$max> bytes,
 prints '[...]' instead of the actual data.  If C<$max> is not specified or
 C<undef>, it defaults to 64.
+
+A RIFF chunk is rendered as:
+
+id: E<lt>idE<gt> size: E<lt>sizeE<gt> (E<lt>total sizeE<gt>): E<lt>dataE<gt>
+
+A RIFF container is rendered as:
+
+id: E<lt>idE<gt> (E<lt>typeE<gt>) size: E<lt>sizeE<gt> (E<lt>total sizeE<gt>)
+
+Items contained in the RIFF list are recursively printed on subsequent lines,
+and are indented in one additional tab level.
 
 =back
 

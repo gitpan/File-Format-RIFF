@@ -1,5 +1,11 @@
 Revision history for Perl extension File::Format::RIFF.
 
+0.9.3  Sat Aug  6 13:14:50 CDT 2005
+	- 'read' calls 'binmode' on the filehandle (to support Windows)
+	- removed extraneous right-paren in an error message
+	- formatting fixes to documentation
+	- more detailed documentation for Container::dump
+
 0.9.2  Tue Apr 26 19:36:29 CDT 2005
 	- fixed bug in RIFF::read when $filesize was specified
 	- fixed bug in Container::at when used as a getter
