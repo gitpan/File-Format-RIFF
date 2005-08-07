@@ -254,6 +254,12 @@ C<$container>.
 
 Returns the size (in bytes) of C<$container>'s data, when written to a file.
 
+=item $total_size = $container->total_size;
+
+Returns the total size (in bytes) that C<$container> will take up when
+written out to a file.  Total size is the size of the data, plus 12 bytes
+for the header.
+
 =item @replaced = $self->splice( $offset, $length, @list );
 
 =item $container->push( @chunks );

@@ -1,7 +1,6 @@
 use Test;
-BEGIN { plan tests => 4 };
+BEGIN { plan tests => 3 };
 use File::Format::RIFF;
-ok( 1 );
 
 open( IN, 't/test.riff' ) or die "could not open file";
 my ( $riff1 ) = File::Format::RIFF->read( \*IN );

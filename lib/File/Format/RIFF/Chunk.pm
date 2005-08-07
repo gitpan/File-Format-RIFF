@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 
 use bytes;
@@ -217,8 +217,8 @@ interpret it yourself).
 
 Creates a new File::Format::RIFF::Chunk object.  C<$id> is a four character
 code that identifies the type of data.  If C<$id> is not specified, it
-defaults to C<'    '>.  C<$data> is a scalar, treated as opaque binary data.
-If C<$data> is undef or not specified, it defaults to ''.
+defaults to C<'    '> (four spaces).  C<$data> is a scalar, treated as
+opaque binary data.  If C<$data> is undef or not specified, it defaults to ''.
 
 =back
 
@@ -228,7 +228,7 @@ If C<$data> is undef or not specified, it defaults to ''.
 
 =item $id = $chunk->id;
 
-Returns the id of <$chunk>.
+Returns the id of C<$chunk>.
 
 =item $chunk->id( 'abcd' );
 
@@ -248,13 +248,24 @@ binary data, not modified or interpreted in any way.
 
 Returns the size (in bytes) of C<$chunk>'s data.
 
-=back
+=item $total_size = $chunk->total_size;
+
+Returns the total size (in bytes) that C<$chunk> will take up when written
+out to a file.  Total size is the size of the data, plus 8 bytes for the
+header, plus 1 alignment byte if the data has an odd number of bytes (so that
+the RIFF chunks will be word-aligned on disk).
 
 =item $chunk->dump( $max );
 
 Prints a string representation of C<$chunk> to STDOUT.  If the data is
 larger than C<$max> bytes, prints '[...]' instead of the actual data.  If
 C<$max> is not specified or C<undef>, it defaults to 64.
+
+A RIFF chunk is rendered as:
+
+id: E<lt>idE<gt> size: E<lt>sizeE<gt> (E<lt>total sizeE<gt>): E<lt>dataE<gt>
+
+=back
 
 =head1 AUTHOR
 

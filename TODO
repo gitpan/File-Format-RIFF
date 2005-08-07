@@ -1,11 +1,8 @@
 1.0.0:
 
 better test coverage
-(note to self: make sure to test both default params and explicit params to
-new; test both $class->read and $self->read; test read/write on file,
-string, and socket)
-
-documentation
+(note to self: test both $class->read and $self->read; test read/write on
+file, string, and socket)
 
 
 1.2.0:

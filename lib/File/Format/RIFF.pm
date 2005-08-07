@@ -5,7 +5,7 @@ use base File::Format::RIFF::Container;
 use 5.006;
 use Carp;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 
 sub new
@@ -85,10 +85,10 @@ File Format.  You can read, manipulate, and write RIFF files.
 Creates a new File::Format::RIFF object.  C<$type> is a four character code
 that identifies the type of this particular RIFF file.  Certain types are
 defined to have a format, specifying which chunks must appear (e.g., WAVE
-files).  If C<$type> is not specified, it defaults to C<'    '>.  C<$data> must
-be an array reference containing some number of RIFF lists and/or RIFF
-chunks.  If C<$data> is C<undef> or not specified, then the new RIFF object
-is initialized empty.
+files).  If C<$type> is not specified, it defaults to C<'    '> (four
+spaces).  C<$data> must be an array reference containing some number of RIFF
+lists and/or RIFF chunks.  If C<$data> is C<undef> or not specified, then
+the new RIFF object is initialized empty.
 
 =item $riff = File::Format::RIFF->read( $fh, $filesize );
 
@@ -111,6 +111,16 @@ You may also use sockets for C<$fh>.  But if you do, you must either specify
 the amount of data expected by passing in a value for C<$filesize>, or you
 must pass in C<undef> for C<$filesize> if you do not know ahead of time how
 much data to expect.
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item $riff->write( $fh );
+
+Writes everything out to the given filehandle C<$fh>.
 
 =back
 

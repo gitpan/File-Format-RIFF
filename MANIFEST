@@ -10,5 +10,7 @@ lib/File/Format/RIFF/Chunk.pm
 lib/File/Format/RIFF/Container.pm
 lib/File/Format/RIFF/List.pm
 t/test.riff
-t/test.t
+t/01chunk.t
+t/02list.t
+t/03riff.t
 META.yml                                Module meta-data (added by MakeMaker)
