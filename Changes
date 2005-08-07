@@ -1,5 +1,11 @@
 Revision history for Perl extension File::Format::RIFF.
 
+1.0.0  Sun Aug  7 15:23:36 CDT 2005
+	- finished test suite
+	- fixed bug to allow 'read' to be called on an existing RIFF object
+	- document RIFF::read usage as a method
+	- added eg/socketpair.pl (example streaming a RIFF over a socket)
+
 0.9.4  Sun Aug  7 12:56:13 CDT 2005
 	- more testing
 	- document 'total_size' and RIFF::write

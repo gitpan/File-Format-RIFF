@@ -13,4 +13,5 @@ t/test.riff
 t/01chunk.t
 t/02list.t
 t/03riff.t
+eg/socketpair.pl
 META.yml                                Module meta-data (added by MakeMaker)

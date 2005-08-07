@@ -5,7 +5,7 @@ use base File::Format::RIFF::Container;
 use 5.006;
 use Carp;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 
 sub new
@@ -109,8 +109,9 @@ to do not support the C<stat> call.
 
 You may also use sockets for C<$fh>.  But if you do, you must either specify
 the amount of data expected by passing in a value for C<$filesize>, or you
-must pass in C<undef> for C<$filesize> if you do not know ahead of time how
-much data to expect.
+do not know ahead of time how much data to expect, you must pass in C<undef>
+for C<$filesize>.  (An example of using sockets to read and write RIFF files
+is available with your File::Format::RIFF distribution, at eq/socketpair.pl.)
 
 =back
 
@@ -118,9 +119,15 @@ much data to expect.
 
 =over 4
 
+=item $riff->read( $fh, $filesize );
+
+The C<read> constructor may also be used as a method.  If used in this
+manner, then all existing data contained in C<$riff> will be discarded, and
+replaced by the contents read from C<$fh>.
+
 =item $riff->write( $fh );
 
-Writes everything out to the given filehandle C<$fh>.
+Outputs a properly-formatted RIFF file to the given filehandle C<$fh>.
 
 =back
 

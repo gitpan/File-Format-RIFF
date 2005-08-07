@@ -1,10 +1,3 @@
-1.0.0:
-
-better test coverage
-(note to self: test both $class->read and $self->read; test read/write on
-file, string, and socket)
-
-
 1.2.0:
 
 Way to "register" handler classes, such that the base Chunk class automatically

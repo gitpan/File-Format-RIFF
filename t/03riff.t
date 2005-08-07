@@ -1,5 +1,5 @@
 use Test;
-BEGIN { plan tests => 3 };
+BEGIN { plan tests => 7 };
 use File::Format::RIFF;
 
 open( IN, 't/test.riff' ) or die "could not open file";
@@ -22,3 +22,18 @@ open( STR, '>', \$str2 );
 $riff2->write( \*STR );
 close( STR );
 ok( $str1, $str2 );
+
+$riff2->data( [ ] );
+$riff2->type( 'xtyp' );
+$riff2->addChunk( xyzw => '123123' );
+$str2 = '';
+open( STR, '>', \$str2 );
+$riff2->write( \*STR );
+close( STR );
+open( STR, '<', \$str2 );
+$riff1->read( \*STR, length( $str2 ) );
+close( STR );
+ok( $riff1->numChunks, 1 );
+ok( $riff1->type, 'xtyp' );
+ok( $riff1->at( 0 )->id, 'xyzw' );
+ok( $riff1->at( 0 )->data, '123123' );

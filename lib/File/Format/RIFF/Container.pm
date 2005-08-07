@@ -2,7 +2,7 @@ package File::Format::RIFF::Container;
 use base File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 
 use Carp;
@@ -33,6 +33,14 @@ sub id
    my ( $self ) = shift;
    croak "Cannot set id of $self->{id} chunk" if ( @_ and exists $self->{id} );
    return $self->SUPER::id( @_ );
+}
+
+
+sub read
+{
+   my ( $proto ) = shift;
+   delete $proto->{id} if ( ref( $proto ) );
+   return $proto->SUPER::read( @_ );
 }
 
 

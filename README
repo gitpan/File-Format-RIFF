@@ -8,3 +8,5 @@ manipulating, and writing files in the Resource Interchange File Format
 See LICENSE for copyright statement and licensing information.
 
 See INSTALL for instructions on how to build and install File::Format::RIFF.
+
+See eg/ and t/ for code samples.
