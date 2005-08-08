@@ -1,7 +1,7 @@
 package File::Format::RIFF::Chunk;
 
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 
 use bytes;
@@ -218,7 +218,8 @@ interpret it yourself).
 Creates a new File::Format::RIFF::Chunk object.  C<$id> is a four character
 code that identifies the type of data.  If C<$id> is not specified, it
 defaults to C<'    '> (four spaces).  C<$data> is a scalar, treated as
-opaque binary data.  If C<$data> is undef or not specified, it defaults to ''.
+opaque binary data.  If C<$data> is C<undef> or not specified, it defaults
+to ''.
 
 =back
 

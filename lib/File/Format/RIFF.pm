@@ -5,7 +5,7 @@ use base File::Format::RIFF::Container;
 use 5.006;
 use Carp;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 
 sub new
@@ -108,7 +108,7 @@ C<length( $variable )> for C<$filesize>, because filehandles opened this way
 to do not support the C<stat> call.
 
 You may also use sockets for C<$fh>.  But if you do, you must either specify
-the amount of data expected by passing in a value for C<$filesize>, or you
+the amount of data expected by passing in a value for C<$filesize>, or if you
 do not know ahead of time how much data to expect, you must pass in C<undef>
 for C<$filesize>.  (An example of using sockets to read and write RIFF files
 is available with your File::Format::RIFF distribution, at eq/socketpair.pl.)

@@ -1,5 +1,8 @@
 Revision history for Perl extension File::Format::RIFF.
 
+1.0.1  Mon Aug  8 18:08:09 CDT 2005
+	- misc documentation fixes
+
 1.0.0  Sun Aug  7 15:23:36 CDT 2005
 	- finished test suite
 	- fixed bug to allow 'read' to be called on an existing RIFF object

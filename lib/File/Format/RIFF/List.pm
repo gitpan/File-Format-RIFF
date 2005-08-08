@@ -2,7 +2,7 @@ package File::Format::RIFF::List;
 use base File::Format::RIFF::Container;
 
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 
 sub new
@@ -58,7 +58,7 @@ Creates a new File::Format::RIFF::List object.  C<$type> is a four character
 code that identifies the type of this RIFF list.  If C<$type> is not
 specified, it defaults to C<'    '> (four spaces).  C<$data> must be an
 array reference containing some number of RIFF lists and/or RIFF chunks.
-If C<$data> is undef or not specified, then the new list object is
+If C<$data> is C<undef> or not specified, then the new list object is
 initialized empty.
 
 =back
